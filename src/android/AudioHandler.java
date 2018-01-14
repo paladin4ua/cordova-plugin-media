@@ -310,7 +310,7 @@ public class AudioHandler extends CordovaPlugin {
     public void resumeRecordingAudio(String id) {
         AudioPlayer audio = players.get(id);
         if (audio != null) {
-            audio.resumeRecording();
+            audio.resumeRecording(sampleRate, bitRate);
         }
     }
 

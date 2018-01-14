@@ -287,8 +287,8 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
     /**
      * Resume recording and save to the file specified when recording started.
      */
-    public void resumeRecording() {
-        startRecording(this.audioFile);
+    public void resumeRecording(int sampleRate, int bitRate) {
+        startRecording(this.audioFile, sampleRate, bitRate);
     }
 
     //==========================================================================
