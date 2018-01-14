@@ -71,6 +71,8 @@ public class AudioHandler extends CordovaPlugin {
 
     private String recordId;
     private String fileUriStr;
+    private int sampleRate;
+    private int bitRate;
 
     /**
      * Constructor.
@@ -109,6 +111,8 @@ public class AudioHandler extends CordovaPlugin {
         if (action.equals("startRecordingAudio")) {
             recordId = args.getString(0);
             String target = args.getString(1);
+            sampleRate = args.getInt(2);
+            bitRate = args.getInt(3);
             try {
                 Uri targetUri = resourceApi.remapUri(Uri.parse(target));
                 fileUriStr = targetUri.toString();
@@ -282,9 +286,9 @@ public class AudioHandler extends CordovaPlugin {
      * @param id				The id of the audio player
      * @param file				The name of the file
      */
-    public void startRecordingAudio(String id, String file) {
+    public void startRecordingAudio(String id, String file, int sampleRate, int bitRate) {
         AudioPlayer audio = getOrCreatePlayer(id, file);
-        audio.startRecording(file);
+        audio.startRecording(file, sampleRate, bitRate);
     }
 
     /**
@@ -540,7 +544,7 @@ public class AudioHandler extends CordovaPlugin {
     {
         if(PermissionHelper.hasPermission(this, permissions[WRITE_EXTERNAL_STORAGE])  &&
                 PermissionHelper.hasPermission(this, permissions[RECORD_AUDIO])) {
-            this.startRecordingAudio(recordId, FileHelper.stripFileProtocol(fileUriStr));
+            this.startRecordingAudio(recordId, FileHelper.stripFileProtocol(fileUriStr), sampleRate, bitRate);
         }
         else if(PermissionHelper.hasPermission(this, permissions[RECORD_AUDIO]))
         {

@@ -141,7 +141,7 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
      *
      * @param file              The name of the file
      */
-    public void startRecording(String file) {
+    public void startRecording(String file, int sampleRate, int bitRate) {
         switch (this.mode) {
         case PLAY:
             LOG.d(LOG_TAG, "AudioPlayer Error: Can't record in play mode.");
@@ -153,6 +153,8 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
             this.recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             this.recorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS); // RAW_AMR);
             this.recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC); //AMR_NB);
+            this.recorder.setAudioSamplingRate(sampleRate);
+            this.recorder.setAudioEncodingBitRate(bitRate);
             this.tempFile = generateTempFile();
             this.recorder.setOutputFile(this.tempFile);
             try {
@@ -602,7 +604,7 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
                             } catch (Exception e) {
                                 sendErrorStatus(MEDIA_ERR_ABORTED);
                             }
-                            return false;//we´re not ready yet
+                            return false;//weÂ´re not ready yet
                         }
                         else {
                            //reset the audio file
