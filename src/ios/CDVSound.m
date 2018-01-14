@@ -641,6 +641,9 @@
 
     NSString* mediaId = [command argumentAtIndex:0];
     CDVAudioFile* audioFile = [self audioFileForResource:[command argumentAtIndex:1] withId:mediaId doValidation:YES forRecording:YES];
+	NSNumber* birRate = [command argumentAtIndex:1 withDefault:[NSNumber numberWithInteger:32768]];
+	NSNumber* sampleRate = [command argumentAtIndex:1 withDefault:[NSNumber numberWithInteger:44100]];
+	
     __block NSString* errorMsg = @"";
 
     if ((audioFile != nil) && (audioFile.resourceURL != nil)) {
@@ -672,9 +675,11 @@
             // create a new recorder for each start record
             bool isWav=[[audioFile.resourcePath pathExtension] isEqualToString:@"wav"];
             NSMutableDictionary *audioSettings = [NSMutableDictionary dictionaryWithDictionary:
-                                            @{AVSampleRateKey: @(44100),
+                                            @{AVSampleRateKey: sampleRate,
                                              AVNumberOfChannelsKey: @(1),
                                              }];
+			audioSettings[AVEncoderBitRateKey] = birRate;
+			
             if (isWav)  {
                 audioSettings[AVFormatIDKey]=@(kAudioFormatLinearPCM);
                 audioSettings[AVLinearPCMBitDepthKey]=@(16);
